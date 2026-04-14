@@ -9,6 +9,7 @@ export class Game {
         this.renderSystem = new RenderSystem(this.canvas);
         this.player = new Player();
         this.keys = {};
+        this.lastTime;
 
         this.init();
     }
@@ -18,20 +19,24 @@ export class Game {
         window.addEventListener("resize", () => this.resizeCanvas());
         this.setupInput();
 
-        // Start game loop
+        // start game loop
+        this.lastTime = performance.now();
         requestAnimationFrame((t) => this.gameLoop(t));
     }
 
-    update() {
-        this.player.update(this.keys);
-    }
-
     gameLoop(timestamp) {
-        this.update();
+        const dt = Math.min((timestamp - this.lastTime)/1000, 0.1); // cap dt to prevent big jumps
+        // console.log(dt);
+        this.lastTime = timestamp;
+
+        this.update(dt);
         this.renderSystem.render(this.player);
         requestAnimationFrame((t) => this.gameLoop(t));
     }
 
+    update(dt) {
+        this.player.update(dt, this.keys);
+    }
 
     resizeCanvas() {
         const ratio = 16 / 9;
@@ -59,9 +64,15 @@ export class Game {
 
     setupInput() {
         // key down
-        window.addEventListener("keydown", (e) => (this.keys[e.key.toLowerCase()] = true));
+        window.addEventListener(
+            "keydown",
+            (e) => (this.keys[e.key.toLowerCase()] = true),
+        );
 
         // key up
-        window.addEventListener("keyup", (e) => (this.keys[e.key.toLowerCase()] = false));
+        window.addEventListener(
+            "keyup",
+            (e) => (this.keys[e.key.toLowerCase()] = false),
+        );
     }
 }

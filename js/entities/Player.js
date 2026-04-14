@@ -6,13 +6,13 @@ export class Player {
         this.y = GAME_HEIGHT / 2;
         this.width = 64;
         this.height = 64;
-        this.speed = 5;
+        this.speed = 300;
 
         // Multipliers (for upgrades)
         this.speedMultiplier = 1;
     }
 
-    update(keys) {
+    update(dt, keys) {
         let dx = 0,
             dy = 0;
 
@@ -27,8 +27,8 @@ export class Player {
             dx /= len;
             dy /= len;
 
-            this.x += dx * this.speed * this.speedMultiplier;
-            this.y += dy * this.speed * this.speedMultiplier;
+            this.x += dx * this.speed * this.speedMultiplier * dt;
+            this.y += dy * this.speed * this.speedMultiplier * dt;
         }
 
         // keep player in bounds
