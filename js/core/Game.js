@@ -25,7 +25,7 @@ export class Game {
     }
 
     gameLoop(timestamp) {
-        const dt = Math.min((timestamp - this.lastTime)/1000, 0.1); // cap dt to prevent big jumps
+        const dt = Math.min((timestamp - this.lastTime) / 1000, 0.1); // cap dt to prevent big jumps
         // console.log(dt);
         this.lastTime = timestamp;
 
@@ -74,5 +74,11 @@ export class Game {
             "keyup",
             (e) => (this.keys[e.key.toLowerCase()] = false),
         );
+
+        // clear all keys when context menu appears
+        window.addEventListener("contextmenu", () => (this.keys = {}));
+
+        // clear all keys when when window loses focus
+        window.addEventListener("blur", () => (this.keys = {}));
     }
 }
