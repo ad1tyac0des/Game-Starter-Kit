@@ -7,12 +7,13 @@ export class RenderSystem {
         this.ctx.imageSmoothingEnabled = false;
     }
 
-    render() {
+    render(player) {
         // Background
         this.ctx.fillStyle = "#0f3460";
         this.ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
         this.renderGrid();
+        this.renderPlayer(player);
     }
 
     renderGrid() {
@@ -34,5 +35,13 @@ export class RenderSystem {
             this.ctx.lineTo(GAME_WIDTH, i);
             this.ctx.stroke();
         }
+    }
+
+    renderPlayer(player) {
+        this.ctx.fillStyle = "#1a1a2e";
+        this.ctx.fillRect(player.x, player.y, player.width, player.height);
+        this.ctx.strokeStyle = "white";
+        this.ctx.lineWidth = 2;
+        this.ctx.strokeRect(player.x, player.y, player.width, player.height);
     }
 }

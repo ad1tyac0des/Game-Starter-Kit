@@ -1,11 +1,14 @@
 import { GAME_WIDTH, GAME_HEIGHT } from "./constants.js";
 import { RenderSystem } from "../systems/RenderSystem.js";
+import { Player } from "../entities/Player.js";
 
 export class Game {
     constructor() {
         this.canvas = document.getElementById("gameCanvas");
         this.ctx = this.canvas.getContext("2d");
         this.renderSystem = new RenderSystem(this.canvas);
+        this.player = new Player();
+        this.keys = {};
 
         this.init();
     }
@@ -13,10 +16,22 @@ export class Game {
     init() {
         this.resizeCanvas();
         window.addEventListener("resize", () => this.resizeCanvas());
+        this.setupInput();
 
         // Start game loop
         requestAnimationFrame((t) => this.gameLoop(t));
     }
+
+    update() {
+        this.player.update(this.keys);
+    }
+
+    gameLoop(timestamp) {
+        this.update();
+        this.renderSystem.render(this.player);
+        requestAnimationFrame((t) => this.gameLoop(t));
+    }
+
 
     resizeCanvas() {
         const ratio = 16 / 9;
@@ -42,8 +57,11 @@ export class Game {
         this.canvas.style.margin = `${margin}px`;
     }
 
-    gameLoop(timestamp) {
-        this.renderSystem.render();
-        requestAnimationFrame((t) => this.gameLoop(t));
+    setupInput() {
+        // key down
+        window.addEventListener("keydown", (e) => (this.keys[e.key.toLowerCase()] = true));
+
+        // key up
+        window.addEventListener("keyup", (e) => (this.keys[e.key.toLowerCase()] = false));
     }
 }
