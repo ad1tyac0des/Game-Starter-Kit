@@ -1,12 +1,17 @@
 import { GAME_WIDTH, GAME_HEIGHT } from "./constants.js";
 import { RenderSystem } from "../systems/RenderSystem.js";
 import { Player } from "../entities/Player.js";
+import { ImageManager } from "../managers/ImageManager.js";
 
 export class Game {
     constructor() {
         this.canvas = document.getElementById("gameCanvas");
         this.ctx = this.canvas.getContext("2d");
-        this.renderSystem = new RenderSystem(this.canvas);
+
+        this.imageManager = new ImageManager();
+        this.imageManager.loadAll();
+
+        this.renderSystem = new RenderSystem(this.canvas, this.imageManager);
         this.player = new Player();
         this.keys = {};
         this.lastTime;
