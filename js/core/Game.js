@@ -14,7 +14,7 @@ export class Game {
         this.renderSystem = new RenderSystem(this.canvas, this.imageManager);
         this.player = new Player();
         this.keys = {};
-        this.lastTime;
+        this.lastTime = 0;
 
         this.init();
     }
