@@ -49,9 +49,9 @@ export class Game {
     }
 
     render() {
-        if (this.state === "menu") {
+        if (this.state !== "playing") {
             this.ctx.fillStyle = "#fffbed";
-            this.ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT)
+            this.ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         } else {
             this.renderSystem.render(this.player);
         }
@@ -59,10 +59,18 @@ export class Game {
 
     setupInput() {
         // key down
-        window.addEventListener(
-            "keydown",
-            (e) => (this.keys[e.key.toLowerCase()] = true),
-        );
+        window.addEventListener("keydown", (e) => {
+            this.keys[e.key.toLowerCase()] = true;
+
+            // toggle pause on Escape
+            if (e.key === "Escape") {
+                if (this.state === "playing") {
+                    this.pause();
+                } else if (this.state === "paused") {
+                    this.resume();
+                }
+            }
+        });
 
         // key up
         window.addEventListener(
@@ -79,15 +87,35 @@ export class Game {
 
     setupUI() {
         document.getElementById("playBtn").onclick = () => this.startGame();
+        document.getElementById("resumeBtn").onclick = () => this.resume();
+        document.getElementById("quitBtn").onclick = () => this.returnToMenu();
     }
 
     hideAllPanels() {
-        document.querySelectorAll(".ui-panel").forEach(p => p.classList.remove("active"));
+        document
+            .querySelectorAll(".ui-panel")
+            .forEach((p) => p.classList.remove("active"));
     }
 
     startGame() {
         this.state = "playing";
         this.hideAllPanels();
+    }
+
+    pause() {
+        this.state = "paused";
+        document.getElementById("pauseMenu").classList.add("active");
+    }
+
+    resume() {
+        this.state = "playing";
+        document.getElementById("pauseMenu").classList.remove("active");
+    }
+
+    returnToMenu() {
+        this.state = "menu";
+        this.hideAllPanels();
+        document.getElementById("mainMenu").classList.add("active");
     }
 
     resizeCanvas() {
