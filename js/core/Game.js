@@ -32,6 +32,9 @@ export class Game {
     }
 
     gameLoop(timestamp) {
+        if (this.lastTime === 0) {
+            this.lastTime = timestamp;
+        }
         // cap dt to prevent big jumps
         const dt = Math.min((timestamp - this.lastTime) / 1000, 0.1);
         // console.log(dt);
@@ -100,6 +103,10 @@ export class Game {
     startGame() {
         this.state = "playing";
         this.hideAllPanels();
+
+        // Reset
+        this.player.reset();
+        this.lastTime = performance.now();
     }
 
     pause() {

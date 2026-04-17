@@ -12,6 +12,12 @@ export class Player {
         this.speedMultiplier = 1;
     }
 
+    reset() {
+        this.x = (GAME_WIDTH - this.width) / 2;
+        this.y = (GAME_HEIGHT - this.height) / 2;
+        this.speedMultiplier = 1;
+    }
+
     update(dt, keys) {
         let dx = 0,
             dy = 0;
