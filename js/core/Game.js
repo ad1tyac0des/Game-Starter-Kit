@@ -15,6 +15,7 @@ export class Game {
         this.player = new Player();
         this.keys = {};
         this.lastTime = 0;
+        this.state = "menu";
 
         this.init();
     }
@@ -23,6 +24,7 @@ export class Game {
         this.resizeCanvas();
         window.addEventListener("resize", () => this.resizeCanvas());
         this.setupInput();
+        this.setupUI();
 
         // start game loop
         this.lastTime = performance.now();
@@ -30,17 +32,62 @@ export class Game {
     }
 
     gameLoop(timestamp) {
-        const dt = Math.min((timestamp - this.lastTime) / 1000, 0.1); // cap dt to prevent big jumps
+        // cap dt to prevent big jumps
+        const dt = Math.min((timestamp - this.lastTime) / 1000, 0.1);
         // console.log(dt);
         this.lastTime = timestamp;
 
         this.update(dt);
-        this.renderSystem.render(this.player);
+        this.render();
         requestAnimationFrame((t) => this.gameLoop(t));
     }
 
     update(dt) {
+        if (this.state !== "playing") return;
+
         this.player.update(dt, this.keys);
+    }
+
+    render() {
+        if (this.state === "menu") {
+            this.ctx.fillStyle = "#fffbed";
+            this.ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT)
+        } else {
+            this.renderSystem.render(this.player);
+        }
+    }
+
+    setupInput() {
+        // key down
+        window.addEventListener(
+            "keydown",
+            (e) => (this.keys[e.key.toLowerCase()] = true),
+        );
+
+        // key up
+        window.addEventListener(
+            "keyup",
+            (e) => (this.keys[e.key.toLowerCase()] = false),
+        );
+
+        // clear all keys when context menu appears
+        window.addEventListener("contextmenu", () => (this.keys = {}));
+
+        // clear all keys when when window loses focus
+        window.addEventListener("blur", () => (this.keys = {}));
+    }
+
+    setupUI() {
+        document.getElementById("playBtn").onclick = () => this.startGame();
+    }
+
+    hideAllPanels() {
+        document.querySelectorAll(".ui-panel").forEach(p => p.classList.remove("active"));
+    }
+
+    startGame() {
+        this.state = "playing";
+        this.hideAllPanels();
     }
 
     resizeCanvas() {
@@ -65,25 +112,5 @@ export class Game {
         this.canvas.style.width = `${w}px`;
         this.canvas.style.height = `${h}px`;
         this.canvas.style.margin = `${margin}px`;
-    }
-
-    setupInput() {
-        // key down
-        window.addEventListener(
-            "keydown",
-            (e) => (this.keys[e.key.toLowerCase()] = true),
-        );
-
-        // key up
-        window.addEventListener(
-            "keyup",
-            (e) => (this.keys[e.key.toLowerCase()] = false),
-        );
-
-        // clear all keys when context menu appears
-        window.addEventListener("contextmenu", () => (this.keys = {}));
-
-        // clear all keys when when window loses focus
-        window.addEventListener("blur", () => (this.keys = {}));
     }
 }

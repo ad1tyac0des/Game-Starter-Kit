@@ -1,16 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vanilla JS Game Starter Kit</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
     <div id="gameContainer">
         <canvas id="gameCanvas"></canvas>
+
+        <!-- Main Menu -->
+        <div id="mainMenu" class="ui-panel active">
+            <h1>Game Starter Kit</h1>
+            <button id="playBtn">Play</button>
+            <div style="color: #1B56FD;">
+                <div>WASD - Move</div>
+                <div>ESC - Pause</div>
+            </div>
+        </div>
     </div>
 
     <script type="module" src="js/main.js"></script>
 </body>
+
 </html>
