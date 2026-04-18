@@ -13,12 +13,12 @@
         <canvas id="gameCanvas"></canvas>
 
         <!-- Main Menu -->
-        <div id="mainMenu" class="ui-panel active">
+        <div id="mainMenu" class="ui-panel">
             <h1>Game Starter Kit</h1>
             <button id="playBtn">Play</button>
-            <div style="color: #1B56FD;">
-                <div>WASD - Move</div>
-                <div>ESC - Pause</div>
+            <div>
+                <p>WASD - Move</p>
+                <p>ESC - Pause</p>
             </div>
         </div>
 
@@ -27,6 +27,12 @@
             <h2>PAUSED</h2>
             <button id="resumeBtn">RESUME</button>
             <button id="quitBtn">QUIT TO MENU</button>
+        </div> 
+
+        <!-- Loading Screen -->
+        <div id="loadingScreen" class="ui-panel active">
+            <h2>Loading...</h2>
+            <p>Please wait while we prepare the game.</p>
         </div>
     </div>
 

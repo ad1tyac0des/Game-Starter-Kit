@@ -60,6 +60,14 @@ body {
     margin-bottom: 24px;
 }
 
+.ui-panel p{
+    color: #1B56FD;
+}
+
+#loadingScreen {
+    padding: 40px 70px;
+}
+
 /* Buttons */
 
 button {

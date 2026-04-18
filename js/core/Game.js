@@ -9,7 +9,6 @@ export class Game {
         this.ctx = this.canvas.getContext("2d");
 
         this.imageManager = new ImageManager();
-        this.imageManager.loadAll();
 
         this.renderSystem = new RenderSystem(this.canvas, this.imageManager);
         this.player = new Player();
@@ -20,7 +19,14 @@ export class Game {
         this.init();
     }
 
-    init() {
+    async init() {
+        await Promise.all([
+            this.imageManager.loadAll()
+        ]);
+
+        document.getElementById("loadingScreen").classList.remove("active");
+        document.getElementById("mainMenu").classList.add("active");
+
         this.resizeCanvas();
         window.addEventListener("resize", () => this.resizeCanvas());
         this.setupInput();
@@ -52,7 +58,7 @@ export class Game {
     }
 
     render() {
-        if (this.state !== "playing") {
+        if (this.state === "menu") {
             this.ctx.fillStyle = "#fffbed";
             this.ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
         } else {

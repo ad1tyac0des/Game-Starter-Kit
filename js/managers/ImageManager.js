@@ -4,26 +4,35 @@ export class ImageManager {
     }
 
     load(name, path) {
-        const img = new Image();
-        img.src = path;
+        return new Promise((resolve) => {
+            const img = new Image();
+            img.src = path;
 
-        this.images[name] = { img, loaded: false };
+            this.images[name] = { img, loaded: false };
 
-        img.onload = () => {
-            this.images[name].loaded = true;
-            // console.log(`Img Loaded: ${name}`);
-        };
+            img.onload = () => {
+                this.images[name].loaded = true;
+                resolve();
+                // console.log(`Img Loaded: ${name}`);
+            };
 
-        img.onerror = () => {
-            console.log(`Image failed: ${name} (will use fallback)`);
-        };
+            img.onerror = () => {
+                console.log(`Image failed: ${name} (will use fallback)`);
+                resolve();
+            };
+        });
     }
 
     get(name) {
         return this.images[name]?.loaded ? this.images[name].img : null;
     }
 
-    loadAll() {
-        this.load("player", "./images/player.png");
+    async loadAll() {
+        await Promise.all([
+            this.load("player", "./images/player.png"),
+        ]);
+
+        // Testing - Simulate slow loading
+        await new Promise((resolve) => setTimeout(resolve, 2000))
     }
 }
