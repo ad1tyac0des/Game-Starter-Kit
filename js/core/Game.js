@@ -2,6 +2,7 @@ import { GAME_WIDTH, GAME_HEIGHT } from "./constants.js";
 import { RenderSystem } from "../systems/RenderSystem.js";
 import { Player } from "../entities/Player.js";
 import { ImageManager } from "../managers/ImageManager.js";
+import { AudioManager } from "../managers/AudioManager.js";
 
 export class Game {
     constructor() {
@@ -9,6 +10,7 @@ export class Game {
         this.ctx = this.canvas.getContext("2d");
 
         this.imageManager = new ImageManager();
+        this.audioManager = new AudioManager();
 
         this.renderSystem = new RenderSystem(this.canvas, this.imageManager);
         this.player = new Player();
@@ -21,7 +23,8 @@ export class Game {
 
     async init() {
         await Promise.all([
-            this.imageManager.loadAll()
+            this.imageManager.loadAll(),
+            this.audioManager.loadAll(),
         ]);
 
         document.getElementById("loadingScreen").classList.remove("active");
@@ -95,9 +98,26 @@ export class Game {
     }
 
     setupUI() {
-        document.getElementById("playBtn").onclick = () => this.startGame();
-        document.getElementById("resumeBtn").onclick = () => this.resume();
-        document.getElementById("quitBtn").onclick = () => this.returnToMenu();
+        document.getElementById("playBtn").addEventListener("click", () => {
+            this.startGame();
+            this.audioManager.play("button_click");
+        });
+
+        document.getElementById("resumeBtn").addEventListener("click", () => {
+            this.resume();
+            this.audioManager.play("button_click");
+        });
+
+        document.getElementById("quitBtn").addEventListener("click", () => {
+            this.returnToMenu();
+            this.audioManager.play("button_click");
+        });
+
+        document.querySelectorAll("button").forEach((btn) => {
+            btn.addEventListener("mouseenter", () => {
+                this.audioManager.play("button_hover");
+            });
+        });
     }
 
     hideAllPanels() {
@@ -118,11 +138,13 @@ export class Game {
     pause() {
         this.state = "paused";
         document.getElementById("pauseMenu").classList.add("active");
+        this.audioManager.play("pause");
     }
 
     resume() {
         this.state = "playing";
         document.getElementById("pauseMenu").classList.remove("active");
+        this.audioManager.play("unpause");
     }
 
     returnToMenu() {
