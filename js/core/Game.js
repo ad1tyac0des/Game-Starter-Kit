@@ -3,6 +3,7 @@ import { RenderSystem } from "../systems/RenderSystem.js";
 import { Player } from "../entities/Player.js";
 import { ImageManager } from "../managers/ImageManager.js";
 import { AudioManager } from "../managers/AudioManager.js";
+import { UIManager } from "../managers/UIManager.js";
 
 export class Game {
     constructor() {
@@ -10,6 +11,7 @@ export class Game {
 
         this.imageManager = new ImageManager();
         this.audioManager = new AudioManager();
+        this.uiManager = new UIManager(this);
 
         this.renderSystem = new RenderSystem(this.canvas, this.imageManager);
         this.player = new Player();
@@ -26,13 +28,12 @@ export class Game {
             this.audioManager.loadAll(),
         ]);
 
-        document.getElementById("loadingScreen").classList.remove("active");
-        document.getElementById("mainMenu").classList.add("active");
+        // showPanel: first hides all panels(will hide loading panel), then shows mainMenu
+        this.uiManager.showPanel("mainMenu");
 
         this.resizeCanvas();
         window.addEventListener("resize", () => this.resizeCanvas());
         this.setupInput();
-        this.setupUI();
 
         // start game loop
         this.lastTime = performance.now();
@@ -87,38 +88,10 @@ export class Game {
         window.addEventListener("blur", () => (this.keys = {}));
     }
 
-    setupUI() {
-        document.getElementById("playBtn").addEventListener("click", () => {
-            this.startGame();
-            this.audioManager.play("button_click");
-        });
-
-        document.getElementById("resumeBtn").addEventListener("click", () => {
-            this.resume();
-            this.audioManager.play("button_click");
-        });
-
-        document.getElementById("quitBtn").addEventListener("click", () => {
-            this.returnToMenu();
-            this.audioManager.play("button_click");
-        });
-
-        document.querySelectorAll("button").forEach((btn) => {
-            btn.addEventListener("mouseenter", () => {
-                this.audioManager.play("button_hover");
-            });
-        });
-    }
-
-    hideAllPanels() {
-        document
-            .querySelectorAll(".ui-panel")
-            .forEach((p) => p.classList.remove("active"));
-    }
-
     startGame() {
         this.state = "playing";
-        this.hideAllPanels();
+        this.uiManager.hideAllPanels();
+        this.audioManager.play("button_click");
 
         // Reset
         this.player.reset();
@@ -127,20 +100,20 @@ export class Game {
 
     pause() {
         this.state = "paused";
-        document.getElementById("pauseMenu").classList.add("active");
+        this.uiManager.showPanel("pauseMenu");
         this.audioManager.play("pause");
     }
 
     resume() {
         this.state = "playing";
-        document.getElementById("pauseMenu").classList.remove("active");
+        this.uiManager.hideAllPanels();
         this.audioManager.play("unpause");
     }
 
     returnToMenu() {
         this.state = "menu";
-        this.hideAllPanels();
-        document.getElementById("mainMenu").classList.add("active");
+        this.uiManager.showPanel("mainMenu");
+        this.audioManager.play("button_click");
     }
 
     resizeCanvas() {
