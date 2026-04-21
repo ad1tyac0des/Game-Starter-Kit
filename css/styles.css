@@ -10,8 +10,8 @@ body {
     height: 100%;
     overflow: hidden;
     background: #1a1a2e;
-    font-family: 'Courier New', monospace;
-    color: #FFF8F8;
+    font-family: "Courier New", monospace;
+    color: #fff8f8;
 }
 
 #gameContainer {
@@ -34,9 +34,9 @@ body {
 .ui-panel {
     position: absolute;
     /* background: rgba(0, 0, 0, 0.3); */
-    background: #E9DFC3;
+    background: #e9dfc3;
     backdrop-filter: blur(10px);
-    border: 3px solid #1B56FD;
+    border: 3px solid #1b56fd;
     border-radius: 4px;
     padding: 30px;
     text-align: center;
@@ -48,20 +48,20 @@ body {
     display: block;
 }
 
-.ui-panel h1{
-    color: #1B56FD;
+.ui-panel h1 {
+    color: #1b56fd;
     font-size: 40px;
     margin-bottom: 24px;
 }
 
-.ui-panel h2{
-    color: #1B56FD;
+.ui-panel h2 {
+    color: #1b56fd;
     font-size: 32px;
     margin-bottom: 24px;
 }
 
-.ui-panel p{
-    color: #1B56FD;
+.ui-panel p {
+    color: #1b56fd;
 }
 
 #loadingScreen {
@@ -71,21 +71,35 @@ body {
 /* Buttons */
 
 button {
-    background: #0118D8;
-    color: #FFF8F8;
-    border: 2px solid #1B56FD;
+    background: #0118d8;
+    color: #fff8f8;
+    border: 2px solid #1b56fd;
     border-radius: 4px;
     outline: none;
     padding: 12px 30px;
     margin: 0 4px 10px 4px;
     font-size: 16px;
     cursor: pointer;
-    font-family: 'Courier New', monospace;
+    font-family: "Courier New", monospace;
     transition: all 0.2s;
 }
 
 button:hover {
-    background: #1B56FD;
+    background: #1b56fd;
     transform: translateY(-2px);
     box-shadow: 0 0 10px #1b57fd6a;
+}
+
+#timer {
+    position: absolute;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 32px;
+    font-weight: bold;
+    color: #fff8f8;
+    text-shadow: 0 0 20px #fff8f8ab;
+    z-index: 1000;
+    pointer-events: none;
+    display: none;
 }

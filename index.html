@@ -1,16 +1,19 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vanilla JS Game Starter Kit</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css" />
 </head>
 
 <body>
     <div id="gameContainer">
         <canvas id="gameCanvas"></canvas>
+
+        <!-- Timer -->
+        <div id="timer">0:00</div>
 
         <!-- Main Menu -->
         <div id="mainMenu" class="ui-panel">
@@ -27,7 +30,7 @@
             <h2>PAUSED</h2>
             <button id="resumeBtn">RESUME</button>
             <button id="quitBtn">QUIT TO MENU</button>
-        </div> 
+        </div>
 
         <!-- Loading Screen -->
         <div id="loadingScreen" class="ui-panel active">

@@ -17,6 +17,7 @@ export class Game {
         this.player = new Player();
         this.keys = {};
         this.lastTime = 0;
+        this.time = 0;
         this.state = "menu";
 
         this.init();
@@ -46,8 +47,12 @@ export class Game {
         }
         // cap dt to prevent big jumps
         const dt = Math.min((timestamp - this.lastTime) / 1000, 0.1);
-        // console.log(dt);
         this.lastTime = timestamp;
+
+        if (this.state === "playing") {
+            this.time += dt;
+            this.uiManager.updateTimer(this.time);
+        }
 
         this.update(dt);
         this.renderSystem.render(this.state, this.player);
@@ -91,11 +96,13 @@ export class Game {
     startGame() {
         this.state = "playing";
         this.uiManager.hideAllPanels();
+        this.uiManager.showTimer();
         this.audioManager.play("button_click");
 
         // Reset
         this.player.reset();
         this.lastTime = performance.now();
+        this.time = 0;
     }
 
     pause() {
@@ -113,6 +120,7 @@ export class Game {
     returnToMenu() {
         this.state = "menu";
         this.uiManager.showPanel("mainMenu");
+        this.uiManager.hideTimer();
         this.audioManager.play("button_click");
     }
 
