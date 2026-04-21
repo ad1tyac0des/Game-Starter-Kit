@@ -7,7 +7,6 @@ import { AudioManager } from "../managers/AudioManager.js";
 export class Game {
     constructor() {
         this.canvas = document.getElementById("gameCanvas");
-        this.ctx = this.canvas.getContext("2d");
 
         this.imageManager = new ImageManager();
         this.audioManager = new AudioManager();
@@ -50,7 +49,7 @@ export class Game {
         this.lastTime = timestamp;
 
         this.update(dt);
-        this.render();
+        this.renderSystem.render(this.state, this.player);
         requestAnimationFrame((t) => this.gameLoop(t));
     }
 
@@ -58,15 +57,6 @@ export class Game {
         if (this.state !== "playing") return;
 
         this.player.update(dt, this.keys);
-    }
-
-    render() {
-        if (this.state === "menu") {
-            this.ctx.fillStyle = "#fffbed";
-            this.ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
-        } else {
-            this.renderSystem.render(this.player);
-        }
     }
 
     setupInput() {
