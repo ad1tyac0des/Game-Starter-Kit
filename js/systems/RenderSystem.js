@@ -1,4 +1,4 @@
-import { GAME_WIDTH, GAME_HEIGHT, GRID_SIZE } from "../core/constants.js";
+import { GAME_WIDTH, GAME_HEIGHT, GRID_SIZE, GAME_STATES } from "../core/constants.js";
 
 export class RenderSystem {
     constructor(canvas, imageManager) {
@@ -9,7 +9,7 @@ export class RenderSystem {
     }
 
     render(state, player) {
-        if (state == "menu") {
+        if (state === GAME_STATES.MENU) {
             this.renderMenuBackground();
         } else {
             this.ctx.fillStyle = "#0f3460";

@@ -1,4 +1,4 @@
-import { GAME_WIDTH, GAME_HEIGHT } from "./constants.js";
+import { GAME_WIDTH, GAME_HEIGHT, ASPECT_RATIO, CANVAS_MARGIN, GAME_STATES } from "./constants.js";
 import { RenderSystem } from "../systems/RenderSystem.js";
 import { Player } from "../entities/Player.js";
 import { ImageManager } from "../managers/ImageManager.js";
@@ -18,7 +18,7 @@ export class Game {
         this.keys = {};
         this.lastTime = 0;
         this.time = 0;
-        this.state = "menu";
+        this.state = GAME_STATES.MENU;
 
         this.init();
     }
@@ -42,14 +42,11 @@ export class Game {
     }
 
     gameLoop(timestamp) {
-        if (this.lastTime === 0) {
-            this.lastTime = timestamp;
-        }
         // cap dt to prevent big jumps
         const dt = Math.min((timestamp - this.lastTime) / 1000, 0.1);
         this.lastTime = timestamp;
 
-        if (this.state === "playing") {
+        if (this.state === GAME_STATES.PLAYING) {
             this.time += dt;
             this.uiManager.updateTimer(this.time);
         }
@@ -60,7 +57,7 @@ export class Game {
     }
 
     update(dt) {
-        if (this.state !== "playing") return;
+        if (this.state !== GAME_STATES.PLAYING) return;
 
         this.player.update(dt, this.keys);
     }
@@ -72,9 +69,9 @@ export class Game {
 
             // toggle pause on Escape
             if (e.key === "Escape") {
-                if (this.state === "playing") {
+                if (this.state === GAME_STATES.PLAYING) {
                     this.pause();
-                } else if (this.state === "paused") {
+                } else if (this.state === GAME_STATES.PAUSED) {
                     this.resume();
                 }
             }
@@ -94,7 +91,7 @@ export class Game {
     }
 
     startGame() {
-        this.state = "playing";
+        this.state = GAME_STATES.PLAYING;
         this.uiManager.hideAllPanels();
         this.uiManager.showTimer();
         this.audioManager.play("button_click");
@@ -106,38 +103,36 @@ export class Game {
     }
 
     pause() {
-        this.state = "paused";
+        this.state = GAME_STATES.PAUSED;
         this.uiManager.showPanel("pauseMenu");
         this.audioManager.play("pause");
     }
 
     resume() {
-        this.state = "playing";
+        this.state = GAME_STATES.PLAYING;
         this.uiManager.hideAllPanels();
         this.audioManager.play("unpause");
     }
 
     returnToMenu() {
-        this.state = "menu";
+        this.state = GAME_STATES.MENU;
         this.uiManager.showPanel("mainMenu");
         this.uiManager.hideTimer();
         this.audioManager.play("button_click");
     }
 
     resizeCanvas() {
-        const ratio = 16 / 9;
         let w, h;
-        const margin = 15;
 
-        const availableWidth = window.innerWidth - margin * 2;
-        const availableHeight = window.innerHeight - margin * 2;
+        const availableWidth = window.innerWidth - CANVAS_MARGIN * 2;
+        const availableHeight = window.innerHeight - CANVAS_MARGIN * 2;
 
-        if (availableWidth / availableHeight > ratio) {
+        if (availableWidth / availableHeight > ASPECT_RATIO) {
             h = availableHeight;
-            w = h * ratio;
+            w = h * ASPECT_RATIO;
         } else {
             w = availableWidth;
-            h = w / ratio;
+            h = w / ASPECT_RATIO;
         }
 
         this.canvas.width = GAME_WIDTH;
@@ -145,6 +140,6 @@ export class Game {
 
         this.canvas.style.width = `${w}px`;
         this.canvas.style.height = `${h}px`;
-        this.canvas.style.margin = `${margin}px`;
+        this.canvas.style.margin = `${CANVAS_MARGIN}px`;
     }
 }
