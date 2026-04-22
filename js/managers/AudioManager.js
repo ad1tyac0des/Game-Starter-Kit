@@ -23,9 +23,9 @@ export class AudioManager {
     }
 
     play(name) {
-        const sound = this.sounds[name];
+        const sound = this.sounds[name]?.loaded ? this.sounds[name] : null;
 
-        if (sound && sound.loaded) {
+        if (sound) {
             sound.audio.currentTime = 0;
             sound.audio.play().catch((err) => {
                 console.log(`Could not play ${name}: ${err}`);
