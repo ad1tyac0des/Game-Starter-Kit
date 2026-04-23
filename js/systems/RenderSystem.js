@@ -8,7 +8,7 @@ export class RenderSystem {
         this.imageManager = imageManager;
     }
 
-    render(state, player) {
+    render(state, player, enemies = []) {
         if (state === GAME_STATES.MENU) {
             this.renderMenuBackground();
         } else {
@@ -16,6 +16,7 @@ export class RenderSystem {
             this.ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
             this.renderGrid();
+            this.renderEnemies(enemies);
             this.renderPlayer(player);
         }
     }
@@ -37,6 +38,13 @@ export class RenderSystem {
             this.ctx.lineTo(GAME_WIDTH, i);
         }
         this.ctx.stroke();
+    }
+
+    renderEnemies(enemies) {
+        for (const enemy of enemies) {
+            this.ctx.fillStyle = "#df4242";
+            this.ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+        }
     }
 
     renderPlayer(player) {

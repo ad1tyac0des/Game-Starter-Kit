@@ -4,6 +4,7 @@ import { Player } from "../entities/Player.js";
 import { ImageManager } from "../managers/ImageManager.js";
 import { AudioManager } from "../managers/AudioManager.js";
 import { UIManager } from "../managers/UIManager.js";
+import { EnemyManager } from "../managers/EnemyManager.js";
 
 export class Game {
     constructor() {
@@ -12,6 +13,7 @@ export class Game {
         this.imageManager = new ImageManager();
         this.audioManager = new AudioManager();
         this.uiManager = new UIManager(this);
+        this.enemyManager = new EnemyManager();
 
         this.renderSystem = new RenderSystem(this.canvas, this.imageManager);
         this.player = new Player();
@@ -52,7 +54,7 @@ export class Game {
         }
 
         this.update(dt);
-        this.renderSystem.render(this.state, this.player);
+        this.renderSystem.render(this.state, this.player, this.enemyManager.getActiveEnemies());
         requestAnimationFrame((t) => this.gameLoop(t));
     }
 
@@ -60,6 +62,7 @@ export class Game {
         if (this.state !== GAME_STATES.PLAYING) return;
 
         this.player.update(dt, this.keys);
+        this.enemyManager.update(dt, this.player);
     }
 
     setupInput() {
@@ -100,6 +103,8 @@ export class Game {
         this.player.reset();
         this.lastTime = performance.now();
         this.time = 0;
+
+        this.enemyManager.spawn(100, 100);
     }
 
     pause() {
