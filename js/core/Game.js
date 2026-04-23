@@ -94,7 +94,7 @@ export class Game {
         this.state = GAME_STATES.PLAYING;
         this.uiManager.hideAllPanels();
         this.uiManager.showTimer();
-        this.audioManager.play("button_click");
+        this.playSound("button_click");
 
         // Reset
         this.player.reset();
@@ -105,20 +105,24 @@ export class Game {
     pause() {
         this.state = GAME_STATES.PAUSED;
         this.uiManager.showPanel("pauseMenu");
-        this.audioManager.play("pause");
+        this.playSound("pause");
     }
 
     resume() {
         this.state = GAME_STATES.PLAYING;
         this.uiManager.hideAllPanels();
-        this.audioManager.play("unpause");
+        this.playSound("unpause");
     }
 
     returnToMenu() {
         this.state = GAME_STATES.MENU;
         this.uiManager.showPanel("mainMenu");
         this.uiManager.hideTimer();
-        this.audioManager.play("button_click");
+        this.playSound("button_click");
+    }
+    
+    playSound(name) {
+        this.audioManager.play(name);
     }
 
     resizeCanvas() {

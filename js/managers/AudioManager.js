@@ -11,7 +11,7 @@ export class AudioManager {
             // onX is fine here - fresh Audio object, one-time load event, no other listeners needed
             audio.onloadeddata = () => {
                 this.sounds[name].loaded = true;
-                console.log(`Audio loaded: ${name}`);
+                console.log(`[DEV] Audio loaded: ${name}`);
                 resolve();
             };
 

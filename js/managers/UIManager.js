@@ -5,32 +5,35 @@ export class UIManager {
         this.mainMenuEl = document.getElementById("mainMenu");
         this.pauseMenuEl = document.getElementById("pauseMenu");
         this.loadingScreenEl = document.getElementById("loadingScreen");
+        this.playBtnEl = document.getElementById("playBtn");
+        this.resumeBtnEl = document.getElementById("resumeBtn");
+        this.quitBtnEl = document.getElementById("quitBtn");
 
         this.setupEventListeners();
     }
 
     setupEventListeners() {
-        document.getElementById("playBtn").addEventListener("click", () => {
+        this.playBtnEl?.addEventListener("click", () => {
             this.game.startGame();
         });
 
-        document.getElementById("resumeBtn").addEventListener("click", () => {
+        this.resumeBtnEl?.addEventListener("click", () => {
             this.game.resume();
         });
 
-        document.getElementById("quitBtn").addEventListener("click", () => {
+        this.quitBtnEl?.addEventListener("click", () => {
             this.game.returnToMenu();
         });
 
-        document.querySelectorAll("button").forEach((btn) => {
-            btn.addEventListener("mouseenter", () => {
-                this.game.audioManager.play("button_hover");
+        [this.playBtnEl, this.resumeBtnEl, this.quitBtnEl].forEach((btn) => {
+            btn?.addEventListener("mouseenter", () => {
+                this.game.playSound("button_hover");
             });
         });
     }
 
     hideAllPanels() {
-        [this.mainMenuEl, this.pauseMenuEl, this.loadingScreenEl].forEach((p) => p.classList.remove("active"));
+        [this.mainMenuEl, this.pauseMenuEl, this.loadingScreenEl].forEach((p) => p?.classList.remove("active"));
     }
 
     showPanel(panelId) {

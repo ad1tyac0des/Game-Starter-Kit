@@ -13,7 +13,7 @@ export class ImageManager {
             img.onload = () => {
                 this.images[name].loaded = true;
                 resolve();
-                // console.log(`Img Loaded: ${name}`);
+                console.log(`[DEV] Img Loaded: ${name}`);
             };
 
             img.onerror = () => {
