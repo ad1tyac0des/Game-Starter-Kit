@@ -30,6 +30,7 @@ export class ImageManager {
     async loadAll() {
         await Promise.all([
             this.load("player", "./images/player.png"),
+            this.load("enemy", "./images/enemy.png"),
         ]);
 
         // Testing - Simulate slow loading
