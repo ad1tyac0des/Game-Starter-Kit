@@ -101,10 +101,15 @@ export class Game {
 
         // Reset
         this.player.reset();
+        this.enemyManager.reset();
         this.lastTime = performance.now();
         this.time = 0;
 
         this.enemyManager.spawn(100, 100);
+        this.enemyManager.spawn(900, 50);
+        this.enemyManager.spawn(200, 150);
+        this.enemyManager.spawn(1000, 600);
+        this.enemyManager.spawn(700, 400);
     }
 
     pause() {
