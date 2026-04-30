@@ -1,8 +1,9 @@
 import { GAME_WIDTH, GAME_HEIGHT, ENEMY_DESPAWN_MARGIN } from "../core/constants.js";
 
 export class Enemy {
-    constructor(data) {
+    constructor(data, behaviour) {
         this.data = data;
+        this.behaviour = behaviour;
 
         // Position and dimensions
         this.x = 0;
@@ -29,6 +30,10 @@ export class Enemy {
     reset() {
         this.active = false;
         this.health = this.data.health;
+
+        if (this.behaviour.reset) {
+            this.behaviour.reset();
+        }
     }
 
     update(dt, player) {
@@ -44,17 +49,6 @@ export class Enemy {
             return;
         }
 
-        // calculate direction vector towards player
-        const dx = player.x - this.x;
-        const dy = player.y - this.y;
-        const len = Math.sqrt(dx * dx + dy * dy);
-
-        if (len > 0) {
-            const nx = dx / len;
-            const ny = dy / len;
-
-            this.x += nx * this.speed * dt;
-            this.y += ny * this.speed * dt;
-        }
+        this.behaviour.update(this, dt, player);
     }
 }

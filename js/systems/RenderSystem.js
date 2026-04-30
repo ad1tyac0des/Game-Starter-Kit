@@ -41,15 +41,15 @@ export class RenderSystem {
     }
 
     renderEnemies(enemies) {
-        const enemyImage = this.imageManager.get("enemy");
         for (const enemy of enemies) {
-            if (enemyImage) {
-                this.ctx.drawImage(enemyImage, enemy.x, enemy.y, enemy.width, enemy.height);
-            } else {
-                // fallback
-                this.ctx.fillStyle = "#df4242";
-                this.ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
-            }
+            // const enemyImage = this.imageManager.get("enemy");
+            // if (enemyImage) {
+            //     this.ctx.drawImage(enemyImage, enemy.x, enemy.y, enemy.width, enemy.height);
+            // } else {
+            // fallback
+            // }
+            this.ctx.fillStyle = enemy.data.color;
+            this.ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
         }
     }
 
