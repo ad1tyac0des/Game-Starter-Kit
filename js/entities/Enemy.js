@@ -18,6 +18,7 @@ export class Enemy {
         this.collisionRadius = data.collisionRadius;
 
         this.active = false;
+        this.facingLeft = false;
     }
 
     spawn(x, y) {
@@ -49,6 +50,13 @@ export class Enemy {
             return;
         }
 
+        // Update facing direction based on movement
+        const oldX = this.x;
         this.behaviour.update(this, dt, player);
+        if (this.x < oldX) {
+            this.facingLeft = true;
+        } else {
+            this.facingLeft = false;
+        }
     }
 }

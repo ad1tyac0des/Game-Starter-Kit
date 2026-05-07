@@ -43,8 +43,17 @@ export class RenderSystem {
     renderEnemies(enemies) {
         for (const enemy of enemies) {
             const enemyImage = this.imageManager.get(enemy.data.image);
+            
             if (enemyImage) {
-                this.ctx.drawImage(enemyImage, enemy.x, enemy.y, enemy.width, enemy.height);
+                this.ctx.save();
+                if (enemy.facingLeft) {
+                    this.ctx.translate(enemy.x + enemy.width, enemy.y);
+                    this.ctx.scale(-1, 1);
+                    this.ctx.drawImage(enemyImage, 0, 0, enemy.width, enemy.height);
+                } else {
+                    this.ctx.drawImage(enemyImage, enemy.x, enemy.y, enemy.width, enemy.height);
+                }
+                this.ctx.restore();
             } else {
                 // fallback
                 this.ctx.fillStyle = enemy.data.color;
@@ -55,8 +64,17 @@ export class RenderSystem {
 
     renderPlayer(player) {
         const playerImage = this.imageManager.get("player");
+
         if (playerImage) {
-            this.ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
+            this.ctx.save();
+            if (player.facingLeft) {
+                this.ctx.translate(player.x + player.width, player.y);
+                this.ctx.scale(-1, 1);
+                this.ctx.drawImage(playerImage, 0, 0, player.width, player.height);
+            } else {
+                this.ctx.drawImage(playerImage, player.x, player.y, player.width, player.height);
+            }
+            this.ctx.restore();
         } else {
             // fallback
             this.ctx.fillStyle = "#1a1a2e";

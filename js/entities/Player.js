@@ -11,6 +11,8 @@ export class Player {
 
         // Multipliers (for upgrades)
         this.speedMultiplier = 1;
+
+        this.facingLeft = false;
     }
 
     reset() {
@@ -27,6 +29,9 @@ export class Player {
         if (keys["s"] || keys["arrowdown"]) dy += 1;
         if (keys["a"] || keys["arrowleft"]) dx -= 1;
         if (keys["d"] || keys["arrowright"]) dx += 1;
+
+        // Update facing direction based on movement
+        if (dx !== 0) this.facingLeft = dx < 0;
 
         if (dx || dy) {
             // normalize diagonal vector
