@@ -9,3 +9,5 @@ export const GAME_STATES = {
     PAUSED: "paused",
 }
 export const ENEMY_DESPAWN_MARGIN = 200;
+export const ENEMY_SPAWN_MARGIN = 100;
+export const ENEMY_SPAWN_INTERVAL = 2;

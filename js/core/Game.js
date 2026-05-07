@@ -5,6 +5,7 @@ import { ImageManager } from "../managers/ImageManager.js";
 import { AudioManager } from "../managers/AudioManager.js";
 import { UIManager } from "../managers/UIManager.js";
 import { EnemyManager } from "../managers/EnemyManager.js";
+import { EnemySpawner } from "../managers/EnemySpawner.js";
 
 export class Game {
     constructor() {
@@ -14,6 +15,7 @@ export class Game {
         this.audioManager = new AudioManager();
         this.uiManager = new UIManager(this);
         this.enemyManager = new EnemyManager();
+        this.enemySpawner = new EnemySpawner(this.enemyManager);
 
         this.renderSystem = new RenderSystem(this.canvas, this.imageManager);
         this.player = new Player();
@@ -63,6 +65,7 @@ export class Game {
 
         this.player.update(dt, this.keys);
         this.enemyManager.update(dt, this.player);
+        this.enemySpawner.update(dt);
     }
 
     setupInput() {
@@ -104,13 +107,7 @@ export class Game {
         this.enemyManager.reset();
         this.lastTime = performance.now();
         this.time = 0;
-
-        // Spawn Test enemies
-        this.enemyManager.spawn("drifter", 100, 100);
-        this.enemyManager.spawn("drifter", 900, 50);
-        this.enemyManager.spawn("drifter", 200, 150);
-        this.enemyManager.spawn("drifter", 1000, 600);
-        this.enemyManager.spawn("seeker", 700, 400);
+        this.enemySpawner.reset();
     }
 
     pause() {

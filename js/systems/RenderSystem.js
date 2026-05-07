@@ -12,7 +12,7 @@ export class RenderSystem {
         if (state === GAME_STATES.MENU) {
             this.renderMenuBackground();
         } else {
-            this.ctx.fillStyle = "#0f3460";
+            this.ctx.fillStyle = "#114483";
             this.ctx.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
 
             this.renderGrid();
@@ -42,14 +42,14 @@ export class RenderSystem {
 
     renderEnemies(enemies) {
         for (const enemy of enemies) {
-            // const enemyImage = this.imageManager.get("enemy");
-            // if (enemyImage) {
-            //     this.ctx.drawImage(enemyImage, enemy.x, enemy.y, enemy.width, enemy.height);
-            // } else {
-            // fallback
-            // }
-            this.ctx.fillStyle = enemy.data.color;
-            this.ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+            const enemyImage = this.imageManager.get(enemy.data.image);
+            if (enemyImage) {
+                this.ctx.drawImage(enemyImage, enemy.x, enemy.y, enemy.width, enemy.height);
+            } else {
+                // fallback
+                this.ctx.fillStyle = enemy.data.color;
+                this.ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+            }
         }
     }
 
